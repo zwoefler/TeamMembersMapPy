@@ -1,19 +1,51 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>City Dropdown</title>
+    <title>Colleague Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 1000px;
+        }
+
+        #warning{
+            background-color: lightyellow;
+        }
+    </style>
 </head>
 <body>
-  <form method="POST" action="/">
-    <label for="name">Name:</label>
-    <input type="text" name="name" id="name" required>
-    <label for="city">City:</label>
-    <input type="text" id="city" name="city" list="cities">
-    <datalist id="cities">
-      {% for city in cities %}
-      <option value="{{ city }}">
-      {% endfor %}
-    </datalist>
-    <input type="submit" value="Submit">
-  </form>
+    <h1>Colleague Map</h1>
+    <div id="warning">
+        <h3>Error Handling liegt beim User</h3>
+        <p>Gib deine Stadt korrekt ein, dann gibts auch keine Probleme ;)</p>
+    </div>
+    <form action="/add_colleague" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="city" placeholder="City" required>
+        <button type="submit">Add Colleague</button>
+    </form>
+    <div id="map"></div>
+    <ul>
+        {% for colleague in colleagues %}
+        <li>
+            {{ colleague['name'] }} - {{ colleague['city'] }}
+            <a href="/delete/{{ colleague['colleague_id'] }}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([51.1657, 10.4515], 6);  // Center of Germany
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        {% for colleague in colleagues %}
+        L.marker([{{ colleague['lat'] }}, {{ colleague['lon'] }}]).addTo(map)
+            .bindPopup("Name: {{ colleague['name'] }}<br>City: {{ colleague['city'] }}");
+        {% endfor %}
+    </script>
 </body>
 </html>
