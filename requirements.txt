@@ -2,3 +2,5 @@ geopy
 folium
 Nominatim
 Flask==2.3.2
+pytest
+pytest-xdist

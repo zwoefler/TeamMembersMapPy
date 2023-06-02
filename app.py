@@ -1,25 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-cities = ["Flensburg", "Nürnberg"]
+colleagues = []
 
-@app.route("/", methods=['GET', 'POST'])
-def index():
-    if request.method == "POST":
-        name = request.form["name"]
-        city = request.form["city"]
-
-    return render_template("index.html")
+@app.route('/add_colleague', methods=['POST'])
+def add_colleague():
+    colleagues.append(request.json)
+    return "Added Colleague to Dataset"
 
 
-@app.route('/search_cities')
-def search_cities():
-    user_input = request.args.get('q')
-    # Perform the Nominatim API request here and extract city names
-    cities = ['City 1', 'City 2', 'City 3']  # Replace with your logic
-
-    return render_template('city_dropdown.html', cities=cities)
+@app.route('/map', methods=['GET'])
+def show_map():
+    return render_template('map.html')
 
 
 if __name__ == "__main__":
