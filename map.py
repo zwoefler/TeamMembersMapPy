@@ -13,9 +13,8 @@ geolocator = Nominatim(user_agent="my_team_map")
 for location in team_locations:
     try:
         name, city = location.split(', ')
-        city = city + ", Germany"
         address = f"{name}, {city}"
-        loc = geolocator.geocode(city)
+        loc = geolocator.geocode(city, country_codes="de", exactly_one=False, featuretype="city")[0]
         if loc is not None:
             marker = folium.Marker(location=[loc.latitude, loc.longitude], popup=address)
             marker.add_to(map)

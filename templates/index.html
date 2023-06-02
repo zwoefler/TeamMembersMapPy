@@ -1,0 +1,19 @@
+<html>
+<head>
+  <title>City Dropdown</title>
+</head>
+<body>
+  <form method="POST" action="/">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" required>
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" list="cities">
+    <datalist id="cities">
+      {% for city in cities %}
+      <option value="{{ city }}">
+      {% endfor %}
+    </datalist>
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<html>
+  <!-- city_dropdown.html -->
+  <datalist id="cities">
+    {% for city in cities %}
+    <option value="{{ city }}">
+    {% endfor %}
+  </datalist>
+</html>
